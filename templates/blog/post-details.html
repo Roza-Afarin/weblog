@@ -1,6 +1,9 @@
 {% extends 'base.html'%}
 {% load static %}
+{% load custom_tags %}
 {% block content%}
+{% load mathfilters %}
+{% load humanize %}
 
     <!-- Page Content -->
     <!-- Banner Starts Here -->
@@ -32,25 +35,26 @@
                 <div class="col-lg-12">
                   <div class="blog-post">
                     <div class="blog-thumb">
-                      <img src="{% static 'assets/images/blog-post-02.jpg' %}" alt="">
+                      <img src="{{posts.image.url}}" alt="">
                     </div>
                     <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="{% url 'blog:detail' %}"><h4>Aenean pulvinar gravida sem nec</h4></a>
+                      <span>{{posts.tags.all|join:", "}}</span>
+                      <a href="#"><h4>{{posts.title}}</h4></a>
                       <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 12, 2020</a></li>
-                        <li><a href="#">10 Comments</a></li>
+                        <li><a href="#">{{posts.author}}</a></li>
+                        <li><a href="#">{{posts.published_date|date:'d/M/Y'}}</a></li>
+                        <li><a href="#">Comments: {{comments|length}}</a></li>
+                        <li><a href="#">Views: {{posts.count_views}}</a></li>
+                        
                       </ul>
-                      <p>You can browse different tags such as <a rel="nofollow" href="https://templatemo.com/tag/multi-page" target="_parent">multi-page</a>, <a rel="nofollow" href="https://templatemo.com/tag/resume" target="_parent">resume</a>, <a rel="nofollow" href="https://templatemo.com/tag/video" target="_parent">video</a>, etc. to see more CSS templates. Sed hendrerit rutrum arcu, non malesuada nisi. Sed id facilisis turpis. Donec justo elit, dapibus vel ultricies in, molestie sit amet risus. In nunc augue, rhoncus sed libero et, tincidunt tempor nisl. Donec egestas, quam eu rutrum ultrices, sapien ante posuere nisl, ac eleifend eros orci vel ante. Pellentesque vitae eleifend velit. Etiam blandit felis sollicitudin vestibulum feugiat.
-                      <br><br>Donec tincidunt leo nec magna gravida varius. Suspendisse felis orci, egestas ac sodales quis, venenatis et neque. Vivamus facilisis dignissim arcu et blandit. Maecenas finibus dui non pulvinar lacinia. Ut lacinia finibus lorem vel porttitor. Suspendisse et metus nec libero ultrices varius eget in risus. Cras id nibh at erat pulvinar malesuada et non ipsum. Suspendisse id ipsum leo.</p>
+                      {{posts.content|truncatewords:1|safe}}
                       <div class="post-options">
                         <div class="row">
                           <div class="col-6">
                             <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
+                              {% for cat in posts.category.all %}
+								                <li><a href="{% url 'blog:category' cat_name=cat.name %}">{{cat.name}}</a>{% if not forloop.last %},{% endif %}</li>
+							                {% endfor %}
                             </ul>
                           </div>
                           <div class="col-6">
@@ -65,50 +69,50 @@
                     </div>
                   </div>
                 </div>
+                <ul class="pager">
+                  {% if previous and previous.status %}
+                  <li class="previous">
+                    <a href="{% url 'blog:detail' pk=previous.id %}">&larr; Previous Post</a>
+                  </li>
+                  {% endif %}
+                  {% if previous and not previous.status %}
+                  {% countP previous as count %}
+                  <li class="previous">
+                    <a href="{% url 'blog:detail' pk=previous.id|sub:count %}">&larr; Previous Post</a>
+                  </li>
+                  {% endif %}
+                  {% if next and next.status %}
+                  <li class="next">
+                    <a href="{% url 'blog:detail' pk=next.id %}">Next Post &rarr;</a>
+                  </li>
+                  {% endif %}
+                  {% if next and not next.status %}
+                  {% countN next as count %}
+                  <li class="next">
+                    <a href="{% url 'blog:detail' pk=next.id|add:count %}">Next Post &rarr;</a>
+                  </li>
+                  {% endif %}
+                </ul>
                 <div class="col-lg-12">
                   <div class="sidebar-item comments">
                     <div class="sidebar-heading">
-                      <h2>4 comments</h2>
+                      <h2>{{comments|length}} comments</h2>
                     </div>
                     <div class="content">
+                      {% for comment in comments %}
                       <ul>
                         <li>
                           <div class="author-thumb">
                             <img src="{% static 'assets/images/comment-author-01.jpg' %}" alt="">
                           </div>
                           <div class="right-content">
-                            <h4>Charles Kate<span>May 16, 2020</span></h4>
-                            <p>Fusce ornare mollis eros. Duis et diam vitae justo fringilla condimentum eu quis leo. Vestibulum id turpis porttitor sapien facilisis scelerisque. Curabitur a nisl eu lacus convallis eleifend posuere id tellus.</p>
+                            <h4>{{comment.name}}<span>{{comment.created_date|naturaltime}}</span></h4>
+                            <p>{{comment.message}}</p>
                           </div>
                         </li>
-                        <li class="replied">
-                          <div class="author-thumb">
-                            <img src="{% static 'assets/images/comment-author-02.jpg' %}" alt="">
-                          </div>
-                          <div class="right-content">
-                            <h4>Thirteen Man<span>May 20, 2020</span></h4>
-                            <p>In porta urna sed venenatis sollicitudin. Praesent urna sem, pulvinar vel mattis eget.</p>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="author-thumb">
-                            <img src="{% static 'assets/images/comment-author-03.jpg' %}" alt="">
-                          </div>
-                          <div class="right-content">
-                            <h4>Belisimo Mama<span>May 16, 2020</span></h4>
-                            <p>Nullam nec pharetra nibh. Cras tortor nulla, faucibus id tincidunt in, ultrices eget ligula. Sed vitae suscipit ligula. Vestibulum id turpis volutpat, lobortis turpis ac, molestie nibh.</p>
-                          </div>
-                        </li>
-                        <li class="replied">
-                          <div class="author-thumb">
-                            <img src="{% static 'assets/images/comment-author-02.jpg' %}" alt="">
-                          </div>
-                          <div class="right-content">
-                            <h4>Thirteen Man<span>May 22, 2020</span></h4>
-                            <p>Mauris sit amet justo vulputate, cursus massa congue, vestibulum odio. Aenean elit nunc, gravida in erat sit amet, feugiat viverra leo.</p>
-                          </div>
-                        </li>
+                        
                       </ul>
+                      {% endfor%}
                     </div>
                   </div>
                 </div>
@@ -118,35 +122,75 @@
                       <h2>Your comment</h2>
                     </div>
                     <div class="content">
-                      <form id="comment" action="#" method="post">
+                      <div class="comment-form">
+                        <h4>Leave a Comment</h4>	
+                        
+                        <form  method="POST" action="{% url 'blog:detail' pk=posts.id %}">
+                        {% csrf_token %}
+        
+                          <input type="hidden" name="post" value="{{posts.id}}">
+                          {% if request.user.is_authenticated %}
+                          <input type="hidden" name="name" value="{{request.user.first_name}}">
+                          <input type="hidden" name="email" value="{{request.user.email}}">
+                          {% else %}
+                          <div class="form-group form-inline">
+                            <div class="form-group col-lg-6 col-md-12 name">
+                              <input type="text" class="form-control" name="name" placeholder="Enter Name"
+                                onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Name'">
+                            </div>
+                            <div class="form-group col-lg-6 col-md-12 email">
+                              <input type="email" class="form-control" name="email"
+                                placeholder="Enter email address" onfocus="this.placeholder = ''"
+                                onblur="this.placeholder = 'Enter email address'">
+                            </div>
+                          </div>
+                          {% endif %}
+                          <div class="form-group">
+                            <input type="text" class="form-control" name="subject" placeholder="Subject"
+                              onfocus="this.placeholder = ''" onblur="this.placeholder = 'Subject'">
+                          </div>
+                          <div class="form-group">
+                            <textarea class="form-control mb-10" rows="5" name="message" placeholder="Messege"
+                              onfocus="this.placeholder = ''" onblur="this.placeholder = 'Messege'"
+                              required=""></textarea>
+                          </div>
+                          
+                          <button type="submit" class="primary-btn text-uppercase">Post Comment</button>
+                        </form>
+                        
+                      </div>
+                      <!--
+                      <form action="#" method="post">
+                        {% csrf_token %}
                         <div class="row">
                           <div class="col-md-6 col-sm-12">
                             <fieldset>
-                              <input name="name" type="text" id="name" placeholder="Your name" required="">
+                              <input name="name" type="text"  placeholder="Your name" required="">
                             </fieldset>
                           </div>
                           <div class="col-md-6 col-sm-12">
                             <fieldset>
-                              <input name="email" type="text" id="email" placeholder="Your email" required="">
+                              <input name="email" type="text"  placeholder="Your email" required="">
                             </fieldset>
                           </div>
                           <div class="col-md-12 col-sm-12">
                             <fieldset>
-                              <input name="subject" type="text" id="subject" placeholder="Subject">
+                              <input name="subject" type="text"  placeholder="Subject">
                             </fieldset>
                           </div>
                           <div class="col-lg-12">
                             <fieldset>
-                              <textarea name="message" rows="6" id="message" placeholder="Type your comment" required=""></textarea>
+                              <textarea name="message" rows="6"  placeholder="Type your comment" required=""></textarea>
                             </fieldset>
                           </div>
                           <div class="col-lg-12">
                             <fieldset>
-                              <button type="submit" id="form-submit" class="main-button">Submit</button>
+                              <button type="submit"  class="main-button">Submit</button>
                             </fieldset>
                           </div>
                         </div>
                       </form>
+                    -->
                     </div>
                   </div>
                 </div>
@@ -163,10 +207,6 @@
                     </form>
                   </div>
                 </div>
-
-                {% include 'recent-post.html' %}
-
-                {% include 'categories.html' %}
 
                 {% include 'tag-clouds.html' %}
                 

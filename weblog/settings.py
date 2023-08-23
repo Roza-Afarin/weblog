@@ -41,6 +41,10 @@ INSTALLED_APPS = [
     'blog.apps.BlogConfig',
     'account.apps.AccountConfig',
     'captcha',
+    "taggit",
+    'django_summernote',
+    'django.contrib.humanize',
+    'mathfilters',
 ]
 
 MIDDLEWARE = [

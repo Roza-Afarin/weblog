@@ -1,6 +1,7 @@
 {% extends 'base.html'%}
 {% load static %}
 {% block content%}
+{% load custom_tags %}
 
     <!-- Page Content -->
     <!-- Banner Starts Here -->
@@ -30,27 +31,31 @@
           <div class="col-lg-8">
             <div class="all-blog-posts">
               <div class="row">
+                {%for post in posts%}
                 <div class="col-lg-6">
                   <div class="blog-post">
                     <div class="blog-thumb">
-                      <img src="{% static 'assets/images/blog-thumb-01.jpg' %}" alt="">
+                      <img src="{{post.image.url}}" alt="">
                     </div>
                     <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="{% url 'blog:detail' %}"><h4>Donec tincidunt leo</h4></a>
+                      <span>{{post.tags.all|join:", "}}</span>
+                      <a href="{% url 'blog:detail' pk=post.id %}"><h4>{{post.title}}</h4></a>
                       <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 31, 2020</a></li>
-                        <li><a href="#">12 Comments</a></li>
+                        
+                        <li><a href="#">{{post.author}}</a></li>
+                        <li><a href="#">{{post.published_date|date:'d/M/Y'}}</a></li>
+                        <li><a href="#">Comments: {{comments|length}}</a></li>
+                        <li><a href="#">Views: {{post.count_views}}</a></li>
                       </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
+                      {{post.content|truncatewords:1|safe}}
                       <div class="post-options">
                         <div class="row">
                           <div class="col-lg-12">
                             <ul class="post-tags">
                               <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
+                              {% for cat in post.category.all %}
+								                <li><a href="{% url 'blog:category' cat_name=cat.name %}">{{cat.name}}</a>{% if not forloop.last %},{% endif %}</li>
+							                {% endfor %}
                             </ul>
                           </div>
                         </div>
@@ -58,157 +63,40 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="{% static 'assets/images/blog-thumb-02.jpg' %}" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="{% url 'blog:detail' %}"><h4>Suspendisse et metus</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 22, 2020</a></li>
-                        <li><a href="#">26 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="{% static 'assets/images/blog-thumb-03.jpg' %}" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="{% url 'blog:detail' %}"><h4>Donec tincidunt leo</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 18, 2020</a></li>
-                        <li><a href="#">42 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="{% static '' %}assets/images/blog-thumb-04.jpg" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="{% url 'blog:detail' %}"><h4>Mauris ac dolor ornare</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 16, 2020</a></li>
-                        <li><a href="#">28 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="{% static 'assets/images/blog-thumb-05.jpg' %}" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="{% url 'blog:detail' %}"><h4>Donec tincidunt leo</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 12, 2020</a></li>
-                        <li><a href="#">16 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-6">
-                  <div class="blog-post">
-                    <div class="blog-thumb">
-                      <img src="{% static 'assets/images/blog-thumb-06.jpg' %}" alt="">
-                    </div>
-                    <div class="down-content">
-                      <span>Lifestyle</span>
-                      <a href="{% url 'blog:detail' %}"><h4>Mauris ac dolor ornare</h4></a>
-                      <ul class="post-info">
-                        <li><a href="#">Admin</a></li>
-                        <li><a href="#">May 10, 2020</a></li>
-                        <li><a href="#">3 Comments</a></li>
-                      </ul>
-                      <p>Nullam nibh mi, tincidunt sed sapien ut, rutrum hendrerit velit. Integer auctor a mauris sit amet eleifend.</p>
-                      <div class="post-options">
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <ul class="post-tags">
-                              <li><i class="fa fa-tags"></i></li>
-                              <li><a href="#">Best Templates</a>,</li>
-                              <li><a href="#">TemplateMo</a></li>
-                            </ul>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-lg-12">
-                  <ul class="page-numbers">
-                    <li><a href="#">1</a></li>
-                    <li class="active"><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#"><i class="fa fa-angle-double-right"></i></a></li>
-                  </ul>
-                </div>
+                {% endfor %}
               </div>
+              <nav class="blog-pagination justify-content-center d-flex">
+                <ul class="pagination">
+                  {% if posts.has_previous %}
+                  <li class="page-item">
+                    <a href="?page={{ posts.previous_page_number }}" class="page-link" aria-label="Previous">
+                      <span aria-hidden="true">
+                        <span class="lnr lnr-chevron-left">Previous</span>
+                      </span>
+                    </a>
+                  </li>
+                  {% endif%}
+                  {% for i in posts.paginator.page_range %}
+                  {% if posts.number == i%}
+                  <li class="page-item active "><a href="?page={{i}}" class="page-link">{{i}}</a></li>
+                  {% else %}
+                  <li class="page-item"><a href="?page={{i}}" class="page-link">{{i}}</a></li>
+                  {% endif %}
+                  {% endfor%}
+                  {% if posts.has_next %}
+                  <li class="page-item">
+                    <a href="?page={{ posts.next_page_number }}" class="page-link" aria-label="Next">
+                      <span aria-hidden="true">
+                        <span class="lnr lnr-chevron-right">Next</span>
+                      </span>
+                    </a>
+                  </li>
+                  {% endif %}
+                </ul>
             </div>
+            
           </div>
+          
           <div class="col-lg-4">
             <div class="sidebar">
               <div class="row">
@@ -220,11 +108,10 @@
                   </div>
                 </div>
                 
-                {% include 'recent-post.html' %}
+                {% latestposts 4 %}
 
-                {% include 'categories.html' %}
+                {% postcategories %}
 
-                {% include 'tag-clouds.html' %}
                 
               </div>
             </div>

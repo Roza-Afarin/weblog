@@ -63,9 +63,9 @@ https://templatemo.com/tm-551-stand-blog
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'blog:blog' %}">Blog Entries</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link" href="{% url 'blog:detail' %}">Post Details</a>
-              </li>
+              <!--
+              
+              -->
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'website:contact' %}">Contact Us</a>
               </li>
@@ -73,11 +73,26 @@ https://templatemo.com/tm-551-stand-blog
           </div>
         </div>
       </nav>
-    </header>
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="text-content">
+            {% if messages %}
+            {% for message in messages %}
+             {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
     
+            {% endfor %}
+    
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </header>
+  
     {% block content %}
 
     {% endblock %}
+
+    
 
     <footer>
         <div class="container">
@@ -125,11 +140,5 @@ https://templatemo.com/tm-551-stand-blog
       </script>
   
     </body>
-{% if messages %}
-<ul class="messages">
-{% for message in messages %}
-<li {% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-{% endfor %}
-</ul>
-{% endif %}
+
   </html>

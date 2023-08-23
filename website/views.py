@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from django.contrib import messages
 from website.forms import ContactForm
+from blog.models import post
+from django.utils import timezone
 
 # Create your views here.
 def home_index(request):
-    return render(request,'website/index.html')
+    posts = post.objects.filter(published_date__lte=timezone.now(),status = 1)
+    context = {'posts':posts}
+    return render(request,'website/index.html',context)
 
 def about_index(request):
     return render(request,'website/about.html')
