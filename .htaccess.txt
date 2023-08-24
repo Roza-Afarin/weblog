@@ -1,0 +1,4 @@
+RewriteEngine ON
+RewriteCond https !on
+RewriteCond %{HTTP_HOST} ^www.rozafarin.com [NC]
+RewriteRule (.*) https://rozafarin.com/$1 [L,R=301]

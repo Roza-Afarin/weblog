@@ -1,4 +1,5 @@
 {% load static %}
+{% load static compress %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -12,15 +13,17 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i&display=swap" rel="stylesheet">
 
     <title>Stand CSS Blog by TemplateMo</title>
-
+    
     <!-- Bootstrap core CSS -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
 
     <!-- Additional CSS Files -->
+    {% compress css %}
     <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/templatemo-stand-blog.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+    {% endcompress %}
 <!--
 
 TemplateMo 551 Stand Blog
@@ -46,7 +49,16 @@ https://templatemo.com/tm-551-stand-blog
     <header class="">
       <nav class="navbar navbar-expand-lg">
         <div class="container">
-          <a class="navbar-brand" href="{% url 'website:index' %}"><h2>Stand Blog<em>.</em></h2></a>
+          <ul>
+            {% if request.user.is_authenticated %}
+            <li><a href="#">login as {{request.user.username}}</a>
+            <li><a href="{% url 'account:logout' %}">logout</a></li>
+            {% else %}
+            <li><a href="{% url 'account:login' %}">login</a></li>
+            <li><a href="{% url 'account:signup' %}">signup</a></li>
+            {% endif %}
+          </ul>
+          
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -78,7 +90,7 @@ https://templatemo.com/tm-551-stand-blog
           <div class="text-content">
             {% if messages %}
             {% for message in messages %}
-             {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+            {% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
     
             {% endfor %}
     
@@ -118,6 +130,7 @@ https://templatemo.com/tm-551-stand-blog
       </footer>
   
       <!-- Bootstrap core JavaScript -->
+      {% compress js %}
       <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
       <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
   
@@ -127,6 +140,7 @@ https://templatemo.com/tm-551-stand-blog
       <script src="{% static 'assets/js/slick.js' %}"></script>
       <script src="{% static 'assets/js/isotope.js' %}"></script>
       <script src="{% static 'assets/js/accordions.js' %}"></script>
+      {% endcompress %}
   
       <script language = "text/Javascript"> 
         cleared[0] = cleared[1] = cleared[2] = 0; //set a cleared flag for each field

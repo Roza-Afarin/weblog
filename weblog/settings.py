@@ -25,12 +25,13 @@ SECRET_KEY = 'django-insecure-2gh)(hd$&x7ojvck#_zo@iulhrpp_rqrv%mz6c_h3an#had1&e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -45,6 +46,9 @@ INSTALLED_APPS = [
     'django_summernote',
     'django.contrib.humanize',
     'mathfilters',
+    'django.contrib.sitemaps',
+    'robots',
+    "compressor",
 ]
 
 MIDDLEWARE = [
@@ -142,3 +146,34 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MULTI_CAPTCHA_ADMIN = {
     'engine': 'recaptcha2',
 }
+
+#added backend for authentication by email or username
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend', 
+    'account.authentication.EmailAuthBackend'
+]
+
+# email configs
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.googlemail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'afarin.roza@gmail.com'
+EMAIL_HOST_PASSWORD = 'aexmqcwhujdjjoms'
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+
+#robot
+ROBOTS_USE_SITEMAP = False
+ROBOTS_USE_HOST = True
+
+SITE_ID = 2
+
+#compress
+STATICFILES_FINDERS = (
+        'compressor.finders.CompressorFinder',
+)
+COMPRESS_ENABLED = True
+
+COMPRESS_CSS_FILTERS = ["compressor.filters.cssmin.CSSMinFilter"]
+COMPRESS_JS_FILTERS = ["compressor.filters.jsmin.JSMinFilter"]

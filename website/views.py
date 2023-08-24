@@ -4,6 +4,9 @@ from website.forms import ContactForm
 from blog.models import post
 from django.utils import timezone
 
+def custom_404(request, exception):
+    return render(request, '404.html', status=404)
+
 # Create your views here.
 def home_index(request):
     posts = post.objects.filter(published_date__lte=timezone.now(),status = 1)
