@@ -19,14 +19,21 @@ ALLOWED_HOSTS = ['rozafarin.com','www.rozafarin.com']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'rozafari_travel',
-        'USER': 'rozafari_afarin',
+        'NAME': 'rozafari_blogsite',
+        'USER': 'rozafari_sa',
         'PASSWORD': 'Roza136345%',
         'HOST':'localhost',
         'PORT':'3306',
     }
 }
-
+'''
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
+'''
 STATIC_ROOT = 'home/rozafari/public_html/static'
 MEDIA_ROOT = 'home/rozafari/public_html/media'
 
