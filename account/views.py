@@ -56,6 +56,7 @@ def signup_view(request):
             form = CustomUserCreationForm(request.POST)
             if form.is_valid():
                 form.save()
+                messages.add_message(request, messages.SUCCESS, "User created successfully")
                 return redirect('/')
             else:
                 messages.add_message(request, messages.ERROR, "User was not created")
